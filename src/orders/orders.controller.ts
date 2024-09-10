@@ -26,6 +26,7 @@ export class OrdersController {
   
   @Get('id/:id')
   async findOne(@Param('id', ParseUUIDPipe ) id: string) {
+
     try {
       const order = await firstValueFrom(
         this.ordersClient.send('findOneOrder', { id })
