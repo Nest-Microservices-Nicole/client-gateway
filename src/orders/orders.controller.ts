@@ -20,8 +20,16 @@ export class OrdersController {
   }
 
   @Get()
-  findAll( @Query() orderPaginationDto: OrderPaginationDto ) {
-    return this.natsClient.send('findAllOrders', orderPaginationDto);
+  async findAll( @Query() orderPaginationDto: OrderPaginationDto ) {
+
+    try{
+      const orders = await firstValueFrom(
+        this.natsClient.send('findAllOrders', orderPaginationDto)
+      )   
+      return orders;   
+    }   catch(error){
+      throw new RpcException(error);
+    }
   }
   
   @Get('id/:id')
